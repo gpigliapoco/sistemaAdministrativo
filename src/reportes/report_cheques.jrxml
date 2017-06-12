@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="90e557e4-38ca-4e43-9f63-13f42b7a4f6d">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="CATE" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     banco.`nombre` AS banco_nombre,
+     detallecobro.`iddetalleCobro` AS detallecobro_iddetalleCobro,
+     detallecobro.`sucursal` AS detallecobro_sucursal,
+     detallecobro.`banco` AS detallecobro_banco,
+     detallecobro.`categoria` AS detallecobro_categoria,
+     detallecobro.`importe` AS detallecobro_importe,
+     detallecobro.`numero` AS detallecobro_numero,
+     detallecobro.`vencimiento` AS detallecobro_vencimiento,
+     detallecobro.`fk_idcobros` AS detallecobro_fk_idcobros,
+     detallecobro.`fk_idBanco` AS detallecobro_fk_idBanco,
+     formadepago.`formaPago` AS formadepago_formaPago,
+     operadores.`idOperadores` AS operadores_idOperadores,
+     operadores.`razonSocial` AS operadores_razonSocial,
+     cobros.`fecha` AS cobros_fecha,
+     detallecobro.`fk_idFormaPago` AS detallecobro_fk_idFormaPago,	
+datediff(NOW(),detallecobro.`vencimiento`) as ultima
+
+FROM
+     `banco` banco INNER JOIN `detallecobro` detallecobro ON banco.`idBancos` = detallecobro.`fk_idBanco`
+     INNER JOIN `cobros` cobros ON detallecobro.`fk_idcobros` = cobros.`idCobro`
+     INNER JOIN `formadepago` formadepago ON detallecobro.`fk_idFormaPago` = formadepago.`idFormaDePago`
+     INNER JOIN `operadores` operadores ON cobros.`fk_idoperadores` = operadores.`idOperadores`
+where datediff(NOW(),detallecobro.`vencimiento`) <=0 AND detallecobro.`categoria` =$P{CATE}
+ORDER BY ultima desc]]>
+	</queryString>
+	<field name="banco_nombre" class="java.lang.String"/>
+	<field name="detallecobro_iddetalleCobro" class="java.lang.Long"/>
+	<field name="detallecobro_sucursal" class="java.lang.Integer"/>
+	<field name="detallecobro_banco" class="java.lang.String"/>
+	<field name="detallecobro_categoria" class="java.lang.String"/>
+	<field name="detallecobro_importe" class="java.lang.Double"/>
+	<field name="detallecobro_numero" class="java.lang.Integer"/>
+	<field name="detallecobro_vencimiento" class="java.sql.Date"/>
+	<field name="detallecobro_fk_idcobros" class="java.lang.Long"/>
+	<field name="detallecobro_fk_idBanco" class="java.lang.Long"/>
+	<field name="formadepago_formaPago" class="java.lang.String"/>
+	<field name="operadores_idOperadores" class="java.lang.Long"/>
+	<field name="operadores_razonSocial" class="java.lang.String"/>
+	<field name="cobros_fecha" class="java.sql.Date"/>
+	<field name="detallecobro_fk_idFormaPago" class="java.lang.Long"/>
+	<field name="ultima" class="java.lang.Integer"/>
+	<variable name="variable1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{detallecobro_importe}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="48" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="d090038b-ceb6-48ef-af79-f58c4e91faa5" x="0" y="0" width="555" height="45"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="20" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CHEQUES PROPIOS VENCIMIENTO]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="7a8aa6c6-b029-48cd-9562-77703da5a5c9" x="0" y="45" width="555" height="1"/>
+			</line>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="23">
+			<textField>
+				<reportElement uuid="09d8550f-36b2-4049-81cd-d1b236a49ce0" x="54" y="0" width="132" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{detallecobro_categoria}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="51e33615-153d-4ce4-8cc1-5d331962cb4c" x="0" y="0" width="54" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CATEGORIA]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="21" splitType="Stretch">
+			<line>
+				<reportElement uuid="7a8aa6c6-b029-48cd-9562-77703da5a5c9" x="0" y="20" width="555" height="1"/>
+			</line>
+			<staticText>
+				<reportElement uuid="b599ec15-df50-466c-9bc3-8c233d170c1e" x="0" y="1" width="40" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ID.CO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="fb9bd3b9-d1d4-4deb-b054-8a725c442b86" x="40" y="0" width="38" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ID.DD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="71e9b268-ebd0-4bd9-aee2-9f41beda8ede" x="78" y="1" width="53" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FECHA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="51e33615-153d-4ce4-8cc1-5d331962cb4c" x="131" y="0" width="131" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[OPERADOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b3ba6be3-809a-4bd3-a611-b590cfedf11d" x="262" y="1" width="60" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[BANCO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="4dc7b8d2-02d5-4535-83df-6b9b04bc32dd" x="322" y="1" width="47" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NUMERO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5d573218-98ab-402d-b9c3-4bf2af02ee56" x="369" y="0" width="72" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[VENCIMIENTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="38751027-595b-455a-9e9c-839978fb2088" x="501" y="1" width="54" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[IMPORTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="6e7b6a31-e8fc-4fc4-8044-6e13a9e79d66" x="441" y="1" width="60" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DIAS]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<textField>
+				<reportElement uuid="8c5deb8d-cbd7-4978-a851-de348c999e02" x="0" y="0" width="40" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{detallecobro_fk_idcobros}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="69ef38ea-2aef-4e60-8c10-0f7a8789dc1f" x="40" y="0" width="38" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{detallecobro_iddetalleCobro}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement uuid="29037535-7b3e-426f-9f59-f6ad9287a8a0" x="78" y="0" width="53" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cobros_fecha}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="9d0a5943-b1f4-41e0-9c0a-8787083bb5e8" x="131" y="0" width="131" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{operadores_razonSocial}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="78e0dc70-fcf6-4d82-94b7-29197152cf87" x="262" y="0" width="18" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{detallecobro_fk_idBanco}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="b053f3bb-b142-42c0-b4b8-a6763d3ed36f" x="280" y="0" width="42" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{detallecobro_banco}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="1ac688ba-1b2f-41f5-97f9-19f61e14a2ba" x="322" y="0" width="47" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{detallecobro_numero}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement uuid="c1164897-fb5e-420f-aace-c2827751ff07" x="501" y="0" width="54" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{detallecobro_importe}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement uuid="e40859b8-7f3b-4c44-9ae8-d93c1049ed39" x="369" y="0" width="72" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{detallecobro_vencimiento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="d27417f4-6bf8-4a0f-ad01-18a5733f38e4" x="441" y="0" width="60" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ultima}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch">
+			<textField pattern="¤ #,##0.00">
+				<reportElement uuid="7e206b0f-1ada-4211-bd60-4b1047a06425" x="501" y="22" width="54" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{variable1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="38751027-595b-455a-9e9c-839978fb2088" x="441" y="22" width="54" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

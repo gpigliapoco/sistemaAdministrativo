@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="425" pageHeight="651" columnWidth="385" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="96894d85-bc9b-463d-ba63-bb294bcc0ee7">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="id" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     operadores.`idOperadores` AS operadores_idOperadores,
+     operadores.`direccion` AS operadores_direccion,
+     operadores.`localidad` AS operadores_localidad,
+     operadores.`provincia` AS operadores_provincia,
+     operadores.`razonSocial` AS operadores_razonSocial,
+     ventas.`comprobante` AS ventas_comprobante,
+     ventas.`fecha` AS ventas_fecha,
+     ventas.`importe` AS ventas_importe,
+     detallevta.`cantidad` AS detallevta_cantidad,
+     detallevta.`precio` AS detallevta_precio,
+     productos.`idproductos` AS productos_idproductos,
+     productos.`producto` AS productos_producto,
+     vendedores.`idvendedores` AS vendedores_idvendedores,
+     vendedores.`nombre` AS vendedores_nombre,
+     ventas.`idVentas` AS ventas_idVentas,
+     transporte.`ciudad` AS transporte_ciudad,
+     transporte.`direccion` AS transporte_direccion,
+     transporte.`nombre` AS transporte_nombre
+FROM
+     `operadores` operadores INNER JOIN `ventas` ventas ON operadores.`idOperadores` = ventas.`fk_idOperadores`
+     INNER JOIN `detallevta` detallevta ON ventas.`idVentas` = detallevta.`fk_idventas`
+     INNER JOIN `productos` productos ON detallevta.`fk_idproductos` = productos.`idproductos`
+     INNER JOIN `vendedores` vendedores ON operadores.`fk_idvendedores` = vendedores.`idvendedores`
+     INNER JOIN `transporte` transporte ON operadores.`fk_idtransporte` = transporte.`idtransporte`
+WHERE
+     ventas.`idVentas` = $P{id}]]>
+	</queryString>
+	<field name="operadores_idOperadores" class="java.lang.Long"/>
+	<field name="operadores_direccion" class="java.lang.String"/>
+	<field name="operadores_localidad" class="java.lang.String"/>
+	<field name="operadores_provincia" class="java.lang.String"/>
+	<field name="operadores_razonSocial" class="java.lang.String"/>
+	<field name="ventas_comprobante" class="java.lang.Integer"/>
+	<field name="ventas_fecha" class="java.sql.Date"/>
+	<field name="ventas_importe" class="java.lang.Double"/>
+	<field name="detallevta_cantidad" class="java.lang.Integer"/>
+	<field name="detallevta_precio" class="java.lang.Double"/>
+	<field name="productos_idproductos" class="java.lang.Long"/>
+	<field name="productos_producto" class="java.lang.String"/>
+	<field name="vendedores_idvendedores" class="java.lang.Long"/>
+	<field name="vendedores_nombre" class="java.lang.String"/>
+	<field name="ventas_idVentas" class="java.lang.Long"/>
+	<field name="transporte_ciudad" class="java.lang.String"/>
+	<field name="transporte_direccion" class="java.lang.String"/>
+	<field name="transporte_nombre" class="java.lang.String"/>
+	<variable name="variable1" class="java.lang.Double">
+		<variableExpression><![CDATA[$F{detallevta_cantidad}*$F{detallevta_precio}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="149" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="c5790e76-03c4-438e-bf65-50737f1fd49b" x="140" y="10" width="100" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[REMITO]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement uuid="39c0a675-c674-4267-93db-ca7bf0132985" x="271" y="81" width="113" height="20"/>
+				<textElement textAlignment="Right">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="138cae33-499d-40ba-a77f-cf67ccf78f92" x="327" y="0" width="58" height="15"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ventas_idVentas}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="aa7787f7-60d8-46dd-a3c8-6a56d2846db0" x="327" y="15" width="58" height="15"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ventas_comprobante}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="e3f46235-b3eb-45ad-864c-09ac2e3c58e5" x="291" y="0" width="36" height="15"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Vta.id]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e3f46235-b3eb-45ad-864c-09ac2e3c58e5" x="258" y="15" width="69" height="15"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Comprobante]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="100" splitType="Stretch">
+			<textField>
+				<reportElement uuid="adf26b79-1c32-43e2-bb4f-02fa1a624007" x="84" y="2" width="32" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{operadores_idOperadores}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="254c0c31-4ff9-4e05-a640-fe6ac0155c70" x="116" y="2" width="188" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{operadores_razonSocial}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="3cd07c3d-51a9-47ea-b112-3cbfa59f7954" x="84" y="17" width="220" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{operadores_direccion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="b2e74720-2d4a-4289-8a51-6e99804c9ed5" x="84" y="32" width="140" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{operadores_localidad}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="e3d2d8cf-a613-47b8-89a7-cb3f1a424768" x="304" y="17" width="80" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{operadores_provincia}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="eefbfc16-3a16-4b32-976c-72ab9d24c69c" x="84" y="54" width="100" height="15"/>
+				<textElement verticalAlignment="Bottom"/>
+				<textFieldExpression><![CDATA[$F{transporte_nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="590e5ca9-e26e-49a7-bd0a-a26a672bc388" x="84" y="69" width="100" height="15"/>
+				<textElement verticalAlignment="Bottom"/>
+				<textFieldExpression><![CDATA[$F{transporte_direccion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="dd225340-3bc3-4a5d-8401-1fc2ff6718d1" x="84" y="84" width="100" height="15"/>
+				<textElement verticalAlignment="Bottom"/>
+				<textFieldExpression><![CDATA[$F{transporte_ciudad}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="31" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="22" splitType="Stretch">
+			<textField>
+				<reportElement uuid="e743e802-0dc6-4e2a-aa57-e6ce3241a980" x="84" y="0" width="120" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{productos_producto}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement uuid="759f45ec-c3f2-4024-a85b-595d8016af49" x="240" y="0" width="51" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{detallevta_precio}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement uuid="f1eb9991-19c8-4220-87f1-752c46aeed04" x="320" y="0" width="65" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{variable1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="3f78817c-8e63-4cd8-9b4c-e715a0536f6b" x="0" y="0" width="52" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{detallevta_cantidad}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="34" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="7" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="131" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="2ababd6b-84d9-4ea2-85a9-5b74b17f4ff4" x="107" y="77" width="277" height="54"/>
+				<textElement/>
+				<text><![CDATA[   Nota: Se acepta como Cambio solo aquella mercaderia
+                  que se encuentre en mal estado y no este vencida.
+                           Sin excepcion. La Gerencia.
+
+                             Gracias por su Compra.- "]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

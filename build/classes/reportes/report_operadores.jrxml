@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0951a5f1-008d-4921-9891-6d0ab27514e6">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[SELECT
+     operadores.`idOperadores` AS operadores_idOperadores,
+     operadores.`cuit` AS operadores_cuit,
+     operadores.`direccion` AS operadores_direccion,
+     operadores.`email` AS operadores_email,
+     operadores.`estado` AS operadores_estado,
+     operadores.`localidad` AS operadores_localidad,
+     operadores.`observaciones` AS operadores_observaciones,
+     operadores.`provincia` AS operadores_provincia,
+     operadores.`razonSocial` AS operadores_razonSocial,
+     operadores.`telefono` AS operadores_telefono,
+     categoriaop.`categoria` AS categoriaop_categoria
+FROM
+     `categoriaop` categoriaop INNER JOIN `operadores` operadores ON categoriaop.`idcategoriaOP` = operadores.`fk_idcategoriaOP`]]>
+	</queryString>
+	<field name="operadores_idOperadores" class="java.lang.Long"/>
+	<field name="operadores_cuit" class="java.lang.Integer"/>
+	<field name="operadores_direccion" class="java.lang.String"/>
+	<field name="operadores_email" class="java.lang.String"/>
+	<field name="operadores_estado" class="java.lang.String"/>
+	<field name="operadores_localidad" class="java.lang.String"/>
+	<field name="operadores_observaciones" class="java.lang.String"/>
+	<field name="operadores_provincia" class="java.lang.String"/>
+	<field name="operadores_razonSocial" class="java.lang.String"/>
+	<field name="operadores_telefono" class="java.lang.String"/>
+	<field name="categoriaop_categoria" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="2448dc0a-85d8-491e-9682-641a226dfab8" x="0" y="0" width="555" height="79"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="22" isBold="true"/>
+				</textElement>
+				<text><![CDATA[LISTADO DE OPERADORES]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="26" splitType="Stretch">
+			<line>
+				<reportElement uuid="0591533d-c774-4814-99a1-d63cfc9fee73" x="0" y="25" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="0591533d-c774-4814-99a1-d63cfc9fee73" x="0" y="0" width="555" height="1"/>
+			</line>
+			<staticText>
+				<reportElement uuid="df565b2e-804e-47d8-84df-39de450a68e9" x="0" y="1" width="29" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="fa43e793-9421-4622-9cec-9ebd1145aab8" x="29" y="1" width="116" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[RAZON SOCIAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="d96c3671-272f-41f9-b075-9a06a287bc82" x="145" y="1" width="114" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[DIRECCION]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e980a3a8-81d7-4472-9e4a-d89809b95304" x="259" y="1" width="75" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[LOCALIDAD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="6b93f784-5693-4091-b47b-76567dfb3ec7" x="334" y="1" width="83" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[PROVINCIA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="709c34c8-7a5b-4b8e-b3fd-c150f7b1df96" x="450" y="1" width="100" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[CATEGORIA]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement uuid="2804124f-d69b-4125-8f4a-ddf8dd0073e2" x="0" y="0" width="29" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{operadores_idOperadores}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="a5065623-0494-4b4b-b7dc-b51c723ecea7" x="29" y="0" width="116" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{operadores_razonSocial}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="58b01f64-febe-4598-a9f1-a86e3241cb94" x="145" y="0" width="114" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{operadores_direccion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="781e4cbf-42d7-4e49-ba58-a2e19efdb0b5" x="259" y="0" width="75" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{operadores_localidad}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="ab52de98-d1e9-443b-9e0f-da7091df181a" x="334" y="0" width="83" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{operadores_provincia}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="acc4f038-e8f4-4e5e-b636-2d508124c0b3" x="450" y="1" width="100" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{categoriaop_categoria}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

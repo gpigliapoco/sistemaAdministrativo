@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="83efd4d0-0cfa-424d-a482-2dfe276c2491">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[SELECT
+     sum(stock.`cantidad`) AS stock_cantidad,
+     sum(stock.`salida`) AS stock_salida,
+     stock.`idStock` AS stock_idStock,
+     stock.`fecha` AS stock_fecha,
+     stock.`fk_idproductos` AS stock_fk_idproductos,
+     productos.`idproductos` AS productos_idproductos,
+     productos.`producto` AS productos_producto,
+     categoriapr.`idCategoriaPr` AS categoriapr_idCategoriaPr,
+     categoriapr.`categoria` AS categoriapr_categoria
+FROM
+     `productos` productos INNER JOIN `stock` stock ON productos.`idproductos` = stock.`fk_idproductos`
+     INNER JOIN `categoriapr` categoriapr ON productos.`fk_idcategoriaPR` = categoriapr.`idCategoriaPr`
+where categoriapr.`idCategoriaPr` !=3 and categoriapr.`idCategoriaPr`!=4
+GROUP BY
+     stock.`fk_idproductos`]]>
+	</queryString>
+	<field name="stock_cantidad" class="java.math.BigDecimal"/>
+	<field name="stock_salida" class="java.math.BigDecimal"/>
+	<field name="stock_idStock" class="java.lang.Long"/>
+	<field name="stock_fecha" class="java.sql.Date"/>
+	<field name="stock_fk_idproductos" class="java.lang.Long"/>
+	<field name="productos_idproductos" class="java.lang.Long"/>
+	<field name="productos_producto" class="java.lang.String"/>
+	<field name="categoriapr_idCategoriaPr" class="java.lang.Long"/>
+	<field name="categoriapr_categoria" class="java.lang.String"/>
+	<variable name="variable1" class="java.lang.Integer">
+		<variableExpression><![CDATA[$F{stock_cantidad}.intValue()-$F{stock_salida}.intValue()]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="44" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="4266eb7a-b4e2-48b8-8ab1-e8a00bc6ea5d" x="0" y="0" width="555" height="44"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="24" isBold="true"/>
+				</textElement>
+				<text><![CDATA[STOCK DE PRODUCTOS ]]></text>
+			</staticText>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement uuid="9733ec68-a74b-49de-8baf-16bdb88f29b0" x="408" y="0" width="143" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="23" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="ab65a495-548c-49eb-827f-d7987924660e" x="37" y="2" width="22" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="00b789ad-b011-4728-a9dc-be6895d967c7" x="73" y="2" width="204" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[PRODUCTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="065861b4-2d3e-4e31-8b5d-9c03956c6819" x="294" y="2" width="66" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ENTRADA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="0edb9231-637b-4a81-aaa3-c34c60728e2c" x="385" y="2" width="66" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[SALIDA]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="cd9b1a94-28ae-4f11-a5b5-5685335a1362" x="0" y="21" width="555" height="1"/>
+			</line>
+			<staticText>
+				<reportElement uuid="0edb9231-637b-4a81-aaa3-c34c60728e2c" x="487" y="2" width="66" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement uuid="a8109db4-d07b-4fe8-b6fb-976b17100801" x="37" y="1" width="22" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{stock_fk_idproductos}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="cd320efa-092a-4dea-8be3-7a972bcda572" x="73" y="1" width="204" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{productos_producto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="45ecb0c6-f129-4b39-847a-6bb0cf6430dc" x="294" y="1" width="66" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{stock_cantidad}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="40df59c8-8110-44d5-9f49-652be6de4208" x="385" y="1" width="66" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{stock_salida}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="8ae7a32f-f8d8-4445-9cb0-75cdbf432089" x="487" y="1" width="68" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{variable1}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

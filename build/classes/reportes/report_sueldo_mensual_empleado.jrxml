@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1d84856f-c1ba-4e4b-8904-e72cfea93d87">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="mes" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     categoriaempl.`seccion` AS categoriaempl_seccion,
+     empleados.`idEmpleados` AS empleados_idEmpleados,
+     empleados.`nombre` AS empleados_nombre,
+     empleados.`fk_idCategoria` AS empleados_fk_idCategoria,
+     sum(sueldo.`importe`) AS sueldo_importe,
+     sueldo.`fecha` AS sueldo_fecha
+FROM
+     `categoriaempl` categoriaempl INNER JOIN `empleados` empleados ON categoriaempl.`idCategoriaEMPL` = empleados.`fk_idCategoria`
+     INNER JOIN `sueldo` sueldo ON empleados.`idEmpleados` = sueldo.`fk_idEmpleados`
+where month(sueldo.`fecha`)= $P{mes}
+group by empleados.`idEmpleados`
+order by sueldo_importe desc]]>
+	</queryString>
+	<field name="categoriaempl_seccion" class="java.lang.String"/>
+	<field name="empleados_idEmpleados" class="java.lang.Long"/>
+	<field name="empleados_nombre" class="java.lang.String"/>
+	<field name="empleados_fk_idCategoria" class="java.lang.Long"/>
+	<field name="sueldo_importe" class="java.lang.Double"/>
+	<field name="sueldo_fecha" class="java.sql.Date"/>
+	<variable name="variable1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{sueldo_importe}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="46" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="d090038b-ceb6-48ef-af79-f58c4e91faa5" x="0" y="0" width="555" height="45"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="20" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[SUELDO MENSUAL EMPLEADOS]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="20">
+			<staticText>
+				<reportElement uuid="8314b754-cccc-4509-b057-5719e2ee28a3" x="0" y="0" width="28" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[MES]]></text>
+			</staticText>
+			<textField pattern="MMMMM-yy">
+				<reportElement uuid="7b38973d-4966-4b49-80be-c9a754a50164" x="28" y="0" width="100" height="20"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sueldo_fecha}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="21" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="046e4fb4-b813-4edc-91c6-d4d48e464407" x="0" y="0" width="28" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="d066e873-e0f5-466e-983b-cfdd50ec97b9" x="44" y="0" width="222" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[EMPLEADO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="86145405-a64a-4750-844f-c06f9bdcc8d4" x="287" y="0" width="94" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[SECCION]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="cb73f167-98ea-47ac-8eb4-fc27e7733455" x="395" y="0" width="86" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[SUELDO]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="dcee3254-aa70-48a7-9452-d5fa1140ea71" x="0" y="19" width="555" height="1"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement uuid="b68ce636-c946-4154-93e8-b5d37f037777" x="0" y="0" width="28" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{empleados_idEmpleados}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="0a94440b-3bf6-4390-ad4f-0f915ab69373" x="44" y="0" width="222" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{empleados_nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="717072a6-3d8e-485b-8d2c-6b989a71f600" x="287" y="0" width="94" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{categoriaempl_seccion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement uuid="e94adc8b-e871-4265-ab03-bb357ef833b3" x="395" y="0" width="86" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{sueldo_importe}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch">
+			<textField pattern="¤ #,##0.00">
+				<reportElement uuid="678844d1-157a-4c04-be06-8028fd290b97" x="381" y="0" width="100" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{variable1}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="9188ff07-2919-45fb-8b1e-0f65d44eba5d">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="mes" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="year" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Users\\leo\\Documents\\NetBeansProjects\\orestes_3\\src\\reportes\\"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+    
+     empleados.`fk_idCategoria` AS empleados_fk_idCategoria,
+     categoriaempl.`seccion` AS categoriaempl_seccion,
+     
+     sueldo.`fecha` AS sueldo_fecha,
+    sum(sueldo.`importe`) AS sueldo_importe
+FROM
+     `categoriaempl` categoriaempl INNER JOIN `empleados` empleados ON categoriaempl.`idCategoriaEMPL` = empleados.`fk_idCategoria`
+     INNER JOIN `sueldo` sueldo ON empleados.`idEmpleados` = sueldo.`fk_idEmpleados`
+where month(sueldo.`fecha`)=$P{mes} and  year(sueldo.`fecha`)=$P{year}
+group by categoriaempl_seccion]]>
+	</queryString>
+	<field name="empleados_fk_idCategoria" class="java.lang.Long"/>
+	<field name="categoriaempl_seccion" class="java.lang.String"/>
+	<field name="sueldo_fecha" class="java.sql.Date"/>
+	<field name="sueldo_importe" class="java.lang.Double"/>
+	<variable name="variable1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{sueldo_importe}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="47" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="d090038b-ceb6-48ef-af79-f58c4e91faa5" x="0" y="0" width="555" height="47"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="20" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[SUELDO MENSUAL X SECCION]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="21" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="b1888783-cc9c-4b5e-af67-cca9c2030e05" x="58" y="1" width="100" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SECCION]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ec222c3d-e1d3-41ae-b6a0-93e9c714ec4c" x="326" y="1" width="77" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="22" splitType="Stretch">
+			<textField>
+				<reportElement uuid="9484dbc9-7030-4bf3-b828-d522c401d17b" x="58" y="0" width="100" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{categoriaempl_seccion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement uuid="7e770249-8f18-4776-9557-370205986d73" x="303" y="1" width="100" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{sueldo_importe}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="37ca71f8-6f6a-4dae-989c-f7d7222537f4" x="185" y="1" width="100" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[SUELDOS]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<summary>
+		<band height="395" splitType="Stretch">
+			<textField pattern="¤ #,##0.00">
+				<reportElement uuid="d4d90b60-65a5-4e09-b438-938d18f8ac01" x="303" y="0" width="100" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{variable1}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="4ea35e58-c085-453b-a680-a565acef94eb" x="303" y="0" width="100" height="1"/>
+			</line>
+			<subreport>
+				<reportElement uuid="4069d731-e829-4770-9ab5-cbeec4fe44aa" x="0" y="20" width="555" height="93"/>
+				<subreportParameter name="mes">
+					<subreportParameterExpression><![CDATA[$P{mes}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="year">
+					<subreportParameterExpression><![CDATA[$P{year}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "report_SubSueldo.jasper"]]></subreportExpression>
+			</subreport>
+			<barChart>
+				<chart>
+					<reportElement uuid="5709d42c-aecc-414f-8045-3cb1afcda36f" x="0" y="211" width="555" height="184"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<categorySeries>
+						<seriesExpression><![CDATA["Dummy Series"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{categoriaempl_seccion}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{sueldo_importe}]]></valueExpression>
+					</categorySeries>
+				</categoryDataset>
+				<barPlot>
+					<plot/>
+					<itemLabel/>
+				</barPlot>
+			</barChart>
+		</band>
+	</summary>
+</jasperReport>

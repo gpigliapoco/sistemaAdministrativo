@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="29293085-9ee1-4be2-a08a-f03a907c6611">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="MES" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="YEAR" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     vendedores.`idvendedores` AS vendedores_idvendedores,
+     comisiones.`cantidad` AS comisiones_cantidad,
+     comisiones.`comision` AS comisiones_comision,
+     comisiones.`fecha` AS comisiones_fecha,
+     comisiones.`precio` AS comisiones_precio,
+     comisiones.`fk_idDetalleVta` AS comisiones_fk_idDetalleVta,
+     comisiones.`fk_idProductos` AS comisiones_fk_idProductos,
+     comisiones.`fk_idVendedor` AS comisiones_fk_idVendedor,
+     productos.`producto` AS productos_producto,
+     ventas.`idVentas` AS ventas_idVentas,
+     operadores.`idOperadores` AS operadores_idOperadores,
+     operadores.`razonSocial` AS operadores_razonSocial,
+     operadores.`provincia` AS operadores_provincia,
+     vendedores.`nombre` AS vendedores_nombre
+FROM
+     `vendedores` vendedores INNER JOIN `comisiones` comisiones ON vendedores.`idvendedores` = comisiones.`fk_idVendedor`
+     INNER JOIN `detallevta` detallevta ON comisiones.`fk_idDetalleVta` = detallevta.`idDetalleVta`
+     INNER JOIN `productos` productos ON comisiones.`fk_idProductos` = productos.`idproductos`
+     AND productos.`idproductos` = detallevta.`fk_idproductos`
+     INNER JOIN `ventas` ventas ON detallevta.`fk_idventas` = ventas.`idVentas`
+     INNER JOIN `operadores` operadores ON ventas.`fk_idOperadores` = operadores.`idOperadores`
+     AND vendedores.`idvendedores` = operadores.`fk_idvendedores`
+WHERE vendedores.`idvendedores`=$P{ID} AND month(comisiones.`fecha`)=$P{MES} and year(comisiones.`fecha`)=$P{YEAR}
+ORDER BY comisiones.`fecha`]]>
+	</queryString>
+	<field name="vendedores_idvendedores" class="java.lang.Long"/>
+	<field name="comisiones_cantidad" class="java.lang.Integer"/>
+	<field name="comisiones_comision" class="java.lang.Double"/>
+	<field name="comisiones_fecha" class="java.sql.Date"/>
+	<field name="comisiones_precio" class="java.lang.Double"/>
+	<field name="comisiones_fk_idDetalleVta" class="java.lang.Long"/>
+	<field name="comisiones_fk_idProductos" class="java.lang.Long"/>
+	<field name="comisiones_fk_idVendedor" class="java.lang.Long"/>
+	<field name="productos_producto" class="java.lang.String"/>
+	<field name="ventas_idVentas" class="java.lang.Long"/>
+	<field name="operadores_idOperadores" class="java.lang.Long"/>
+	<field name="operadores_razonSocial" class="java.lang.String"/>
+	<field name="operadores_provincia" class="java.lang.String"/>
+	<field name="vendedores_nombre" class="java.lang.String"/>
+	<variable name="variable1" class="java.lang.Double">
+		<variableExpression><![CDATA[$F{comisiones_cantidad}*$F{comisiones_precio}]]></variableExpression>
+	</variable>
+	<variable name="COMI_TOTAL" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{comisiones_comision}]]></variableExpression>
+	</variable>
+	<variable name="IMPORTE_TOTAL" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$V{variable1}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="47" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="d090038b-ceb6-48ef-af79-f58c4e91faa5" x="0" y="0" width="555" height="45"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="20" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DETALLE DE COMISIONES]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch">
+			<textField>
+				<reportElement uuid="22663271-8c19-4272-8c61-05ad00eba191" x="65" y="0" width="27" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vendedores_idvendedores}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="f6bbb7bf-60a5-420a-8c47-09a7e56ce370" x="92" y="0" width="166" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vendedores_nombre}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="e96a4e8d-675c-4f3d-a7f0-71e4ae3bff5d" x="0" y="0" width="65" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[VENDEDOR]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="22" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="19e256a2-a1a1-4787-805f-288daab4e230" x="96" y="0" width="26" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e96a4e8d-675c-4f3d-a7f0-71e4ae3bff5d" x="0" y="0" width="51" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[FECHA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="0a32cad7-6a02-42d5-97c2-a90ed4dba09c" x="51" y="0" width="45" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[REMITO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ff4eff2b-2d17-4f30-b54e-7ffe0081ab99" x="122" y="0" width="122" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[NOMBRE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="68d7d015-50e9-47ed-a09e-9ac69e93c676" x="313" y="0" width="77" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[PRODUCTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="87105e2e-cc62-4d53-8d4f-f14dc99359d5" x="258" y="0" width="55" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CANTIDAD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5724aa71-1379-40a7-9adc-6ccef7abb4d4" x="390" y="0" width="45" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[PRECIO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2bd01267-5c6c-467c-b15b-fb4a5720f2d8" x="501" y="0" width="54" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[COMISION]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5724aa71-1379-40a7-9adc-6ccef7abb4d4" x="435" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[IMPORTE]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="d4e67b90-a956-4002-a34f-5ec5917478fc" x="0" y="20" width="555" height="1"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement uuid="ba235418-e2d3-4de8-b520-760338d9bc09" x="96" y="0" width="26" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{operadores_idOperadores}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement uuid="4b244c27-90dc-4aba-bd40-ba56c25960ad" x="0" y="0" width="51" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{comisiones_fecha}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="ceb1a5e7-03e8-4fc2-ba97-156f15a6a822" x="51" y="0" width="45" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{ventas_idVentas}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="53ae2791-9ce6-4bad-8715-c8461b9554c2" x="122" y="0" width="122" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{operadores_razonSocial}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="3a53d2c5-587f-4a2e-841b-7b4886bfc9d9" x="313" y="0" width="77" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{productos_producto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="1d6d93f6-7de6-4550-b516-63afb58868ad" x="258" y="0" width="55" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{comisiones_cantidad}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement uuid="92c3b38f-5a68-4f48-9e07-5b1d2b79580f" x="390" y="0" width="45" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{comisiones_precio}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement uuid="a78a49f1-8b73-484f-87d9-aaa233cbe5c4" x="501" y="0" width="54" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{comisiones_comision}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement uuid="e9673344-19db-4ba3-8996-5bdef52c6123" x="435" y="0" width="55" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{variable1}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch">
+			<textField pattern="¤ #,##0.00">
+				<reportElement uuid="f511eefb-a0fc-4693-b084-67ffccf306e0" x="501" y="11" width="54" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{COMI_TOTAL}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement uuid="29675ac4-1e02-4aa8-ab9b-a565a7465aac" x="390" y="11" width="100" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{IMPORTE_TOTAL}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

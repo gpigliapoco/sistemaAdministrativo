@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="58442f3e-5051-4906-aa85-8a239c318247">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="mes" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="year" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     vendedores.`idvendedores` AS vendedores_idvendedores,
+     comisiones.`idComisiones` AS comisiones_idComisiones,
+     sum(comisiones.`comision`) AS comisiones_comision,
+     comisiones.`fecha` AS comisiones_fecha,
+     vendedores.`nombre` AS vendedores_nombre
+FROM
+     `vendedores` vendedores INNER JOIN `comisiones` comisiones ON vendedores.`idvendedores` = comisiones.`fk_idVendedor`
+WHERE month(comisiones.`fecha`)=$P{mes} and year(comisiones.`fecha`)=$P{year}
+group by vendedores_idvendedores
+HAVING vendedores.`idvendedores` !=1]]>
+	</queryString>
+	<field name="vendedores_idvendedores" class="java.lang.Long"/>
+	<field name="comisiones_idComisiones" class="java.lang.Long"/>
+	<field name="comisiones_comision" class="java.lang.Double"/>
+	<field name="comisiones_fecha" class="java.sql.Date"/>
+	<field name="vendedores_nombre" class="java.lang.String"/>
+	<variable name="variable1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{comisiones_comision}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="47" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="d090038b-ceb6-48ef-af79-f58c4e91faa5" x="0" y="0" width="555" height="45"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="20" isBold="true"/>
+				</textElement>
+				<text><![CDATA[VENDEDORES COMISIONES MENSUAL]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="23" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="f22b6370-4e39-4d9a-9b7e-90210022ef25" x="0" y="0" width="30" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1b39c193-41ff-4f4d-90f3-495d4840c0b7" x="44" y="2" width="255" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[NOMBRE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="02402650-11f5-42c6-b2e3-85fd9f3842a6" x="377" y="2" width="93" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[COMISIONES]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="783300ad-0893-4648-9683-6cbceadc499f" x="0" y="22" width="555" height="1"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="23" splitType="Stretch">
+			<textField>
+				<reportElement uuid="d741bb38-8728-4947-b581-51f1b422a8c0" x="0" y="0" width="30" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{vendedores_idvendedores}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="caaf7c22-61d1-45dd-906a-f1fa35d46499" x="44" y="0" width="255" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{vendedores_nombre}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement uuid="a5458356-e68d-4921-8c87-081ef4aa35a3" x="377" y="0" width="93" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{comisiones_comision}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch">
+			<textField pattern="¤ #,##0.00">
+				<reportElement uuid="df8ff8cf-f40e-4a9f-bcea-24254b29d720" x="377" y="22" width="100" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{variable1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="02402650-11f5-42c6-b2e3-85fd9f3842a6" x="284" y="22" width="93" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

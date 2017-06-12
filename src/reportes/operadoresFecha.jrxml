@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="dbac85eb-3f9b-4709-bd8e-7e7b9890896f">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[SELECT
+     operadores.`idOperadores` AS operadores_idOperadores,
+    max( ventas.`fecha`) AS ventas_fecha,
+     ventas.`importe` AS ventas_importe,
+     operadores.`razonSocial` AS operadores_razonSocial,
+	datediff(NOW(),max(ventas.`fecha`)) as ultima
+FROM
+     `operadores` operadores INNER JOIN `ventas` ventas ON operadores.`idOperadores` = ventas.`fk_idOperadores`
+group by operadores_idOperadores
+order by ultima asc]]>
+	</queryString>
+	<field name="operadores_idOperadores" class="java.lang.Long"/>
+	<field name="ventas_fecha" class="java.sql.Date"/>
+	<field name="ventas_importe" class="java.lang.Double"/>
+	<field name="operadores_razonSocial" class="java.lang.String"/>
+	<field name="ultima" class="java.lang.Long"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="47" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="d090038b-ceb6-48ef-af79-f58c4e91faa5" x="0" y="0" width="555" height="45"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="20" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CLIENTES ULTIMA FECHA DE VENTA]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="22" splitType="Stretch">
+			<line>
+				<reportElement uuid="7062ddc7-b5fd-4114-b05a-5e31bf4e9e2f" x="0" y="0" width="555" height="1"/>
+			</line>
+			<staticText>
+				<reportElement uuid="f1891fe5-f3db-4e35-8017-ac68cc4ec635" x="0" y="1" width="43" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="fd96a67c-ec56-40e8-a918-af4357444fb7" x="65" y="1" width="258" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[RAZON SOCIAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="9a880fc9-498d-4b7b-ae2e-5b5ca56edd20" x="335" y="1" width="80" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[FECHA VTA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="541da458-635f-4ebf-9727-5dcefec02340" x="442" y="1" width="100" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DIAS]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="7062ddc7-b5fd-4114-b05a-5e31bf4e9e2f" x="0" y="20" width="555" height="1"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<textField>
+				<reportElement uuid="ff8b509d-4c0a-42a2-97ae-4f00f2b10b31" x="0" y="1" width="43" height="15"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{operadores_idOperadores}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="17a8d2f4-6258-40a7-85bc-136b7c5f865c" x="65" y="1" width="258" height="15"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{operadores_razonSocial}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement uuid="f62b881d-5228-4b89-a405-16496388dfd7" x="335" y="1" width="80" height="15"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{ventas_fecha}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="bc81626c-50d5-4594-9ee5-73e4c4ca84b6" x="442" y="1" width="100" height="15"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{ultima}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

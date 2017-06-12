@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="24f9d539-bce6-43f7-9a9d-c0249f394504">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[SELECT
+     cuentacorriente.`idCuentas` AS cuentacorriente_idCuentas,
+     cuentacorriente.`debe` AS cuentacorriente_debe,
+     cuentacorriente.`fecha` AS cuentacorriente_fecha,
+     cuentacorriente.`haber` AS cuentacorriente_haber,
+     cuentacorriente.`observacion` AS cuentacorriente_observacion,
+     cuentacorriente.`fk_idOperadores` AS cuentacorriente_fk_idOperadores,
+     operadores.`idOperadores` AS operadores_idOperadores,
+     operadores.`razonSocial` AS operadores_razonSocial,
+     operadores.`direccion` AS operadores_direccion,
+     operadores.`localidad` AS operadores_localidad
+FROM
+     `operadores` operadores INNER JOIN `cuentacorriente` cuentacorriente ON operadores.`idOperadores` = cuentacorriente.`fk_idOperadores`
+WHERE
+     cuentacorriente.`fk_idOperadores` = 1]]>
+	</queryString>
+	<field name="cuentacorriente_idCuentas" class="java.lang.Long"/>
+	<field name="cuentacorriente_debe" class="java.lang.Double"/>
+	<field name="cuentacorriente_fecha" class="java.sql.Date"/>
+	<field name="cuentacorriente_haber" class="java.lang.Double"/>
+	<field name="cuentacorriente_observacion" class="java.lang.String"/>
+	<field name="cuentacorriente_fk_idOperadores" class="java.lang.Long"/>
+	<field name="operadores_idOperadores" class="java.lang.Long"/>
+	<field name="operadores_razonSocial" class="java.lang.String"/>
+	<field name="operadores_direccion" class="java.lang.String"/>
+	<field name="operadores_localidad" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="bd76f2e6-417b-4741-ab29-921ae4e374e9" x="0" y="0" width="72" height="20"/>
+				<textElement/>
+				<text><![CDATA[cuentacorriente_fecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="64a00951-f6e5-442b-a3af-bfb2de1fb7a5" x="72" y="2" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[cuentacorriente_fk_idOperadores]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1014a988-5a62-434e-aaf9-ba32460e4407" x="178" y="2" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[operadores_razonSocial]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="4f5ca399-f7e4-43d7-9502-46f8eeba61f9" x="307" y="2" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[cuentacorriente_debe]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="729646ad-3c6f-4b04-838f-ceca84f4d9f4" x="441" y="2" width="40" height="20"/>
+				<textElement/>
+				<text><![CDATA[cuentacorriente_haber]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="33" splitType="Stretch">
+			<textField pattern="">
+				<reportElement uuid="19a83955-a522-4af1-94e4-da444b472976" x="0" y="0" width="72" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{cuentacorriente_fecha}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="c682728c-e927-438d-9449-4c3ffa988972" x="72" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{cuentacorriente_fk_idOperadores}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="11e182c2-a635-4e5e-8f83-1f033c76b0c5" x="178" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{operadores_razonSocial}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement uuid="675fe661-922b-419f-8b5e-c96cbc9fe630" x="307" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{cuentacorriente_debe}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="c5be027e-8098-4b52-b247-ec88c2cac412" x="441" y="0" width="40" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{cuentacorriente_haber}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="172" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

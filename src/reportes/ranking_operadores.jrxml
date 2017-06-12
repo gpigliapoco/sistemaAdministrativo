@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2fb890e4-61fb-4e79-ab8d-69b550a4a390">
+	<property name="ireport.zoom" value="3.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[SELECT
+     operadores.`idOperadores` AS operadores_idOperadores,
+     ventas.`importe` AS ventas_importe,
+     operadores.`razonSocial` AS operadores_razonSocial
+FROM
+     `operadores` operadores INNER JOIN `ventas` ventas ON operadores.`idOperadores` = ventas.`fk_idOperadores`
+group by operadores_idOperadores
+order by ventas_importe desc]]>
+	</queryString>
+	<field name="operadores_idOperadores" class="java.lang.Long"/>
+	<field name="ventas_importe" class="java.lang.Double"/>
+	<field name="operadores_razonSocial" class="java.lang.String"/>
+	<variable name="variable1" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[1+1]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="45" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="d090038b-ceb6-48ef-af79-f58c4e91faa5" x="0" y="0" width="555" height="45"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="20" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RANKING OPERADORES HISTORICO]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="21" splitType="Stretch">
+			<line>
+				<reportElement uuid="7062ddc7-b5fd-4114-b05a-5e31bf4e9e2f" x="0" y="0" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="7062ddc7-b5fd-4114-b05a-5e31bf4e9e2f" x="0" y="20" width="555" height="1"/>
+			</line>
+			<staticText>
+				<reportElement uuid="33ef4a96-9cda-47e7-89b1-608de1ab4d38" x="84" y="0" width="49" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="0ab58170-dbac-4d1f-bc33-bc9a15e74f4b" x="155" y="0" width="259" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[RAZON SOCIAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1df91318-3f79-4a61-a330-c14aad5c6281" x="455" y="0" width="100" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[VENTAS TOTALES]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="4b06ce6b-aabe-4c62-973c-72afb1873ed9" x="0" y="1" width="63" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[RANK]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="17" splitType="Stretch">
+			<textField>
+				<reportElement uuid="63abef6a-2e4d-4874-b496-8f1940d5ff63" x="84" y="0" width="49" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{operadores_idOperadores}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="abd53f84-bd32-4814-a198-5ef172650c86" x="155" y="0" width="259" height="15"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{operadores_razonSocial}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement uuid="032fc8ce-17cf-4cc0-8c03-ed4188f74743" x="455" y="0" width="100" height="15"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{ventas_importe}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="5d74d2bc-d501-4a43-8b8e-6f6d96d50733" x="0" y="0" width="63" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{variable1}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

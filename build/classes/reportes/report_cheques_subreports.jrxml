@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="19ffeecd-a56a-4117-a49b-bfa16f8cafdb">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="fecha" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     detallecobro.`banco` AS detallecobro_banco,
+     detallecobro.`categoria` AS detallecobro_categoria,
+     detallecobro.`importe` AS detallecobro_importe,
+     detallecobro.`numero` AS detallecobro_numero,
+     detallecobro.`vencimiento` AS detallecobro_vencimiento,
+     cobros.`fecha` AS cobros_fecha,
+     operadores.`idOperadores` AS operadores_idOperadores,
+     operadores.`razonSocial` AS operadores_razonSocial,
+     formadepago.`formaPago` AS formadepago_formaPago,
+     banco.`idBancos` AS banco_idBancos
+FROM
+     `banco` banco INNER JOIN `detallecobro` detallecobro ON banco.`idBancos` = detallecobro.`fk_idBanco`
+     INNER JOIN `cobros` cobros ON detallecobro.`fk_idcobros` = cobros.`idCobro`
+     INNER JOIN `formadepago` formadepago ON detallecobro.`fk_idFormaPago` = formadepago.`idFormaDePago`
+     INNER JOIN `operadores` operadores ON cobros.`fk_idoperadores` = operadores.`idOperadores`
+where datediff(NOW(),detallecobro.`vencimiento`) <=0 and  detallecobro.`categoria`="cheque propio" and  detallecobro.`vencimiento`=$P{fecha}
+group by detallecobro.`vencimiento`,  detallecobro.`banco`]]>
+	</queryString>
+	<field name="detallecobro_banco" class="java.lang.String"/>
+	<field name="detallecobro_categoria" class="java.lang.String"/>
+	<field name="detallecobro_importe" class="java.lang.Double"/>
+	<field name="detallecobro_numero" class="java.lang.Integer"/>
+	<field name="detallecobro_vencimiento" class="java.sql.Date"/>
+	<field name="cobros_fecha" class="java.sql.Date"/>
+	<field name="operadores_idOperadores" class="java.lang.Long"/>
+	<field name="operadores_razonSocial" class="java.lang.String"/>
+	<field name="formadepago_formaPago" class="java.lang.String"/>
+	<field name="banco_idBancos" class="java.lang.Long"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="12" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy">
+				<reportElement uuid="8fcb086c-c78e-446b-be23-2072c4fa876b" x="0" y="0" width="79" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cobros_fecha}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="7ba2205c-2b3f-4964-9781-e29299bf5d3b" x="79" y="0" width="32" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{operadores_idOperadores}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="09de8f27-d080-4d51-984f-dba3db3072ef" x="111" y="0" width="100" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{operadores_razonSocial}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="3fa99ecc-867b-4160-bb54-2490ab4f298e" x="374" y="0" width="81" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{detallecobro_numero}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="ab1857fe-48b8-4581-9e8f-a8277176287b" x="258" y="0" width="100" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{detallecobro_banco}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement uuid="0454d933-8cb3-4b6a-961b-62b006d24935" x="455" y="0" width="100" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{detallecobro_importe}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

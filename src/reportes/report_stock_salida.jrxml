@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8ef380a7-65f2-4e91-aee2-b2a135d236b4">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="id" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     stock.`idStock` AS stock_idStock,
+     stock.`cantidad` AS stock_cantidad,
+     stock.`fecha` AS stock_fecha,
+     stock.`salida` AS stock_salida,
+     stock.`fk_idproductos` AS stock_fk_idproductos,
+     productos.`idproductos` AS productos_idproductos,
+     productos.`producto` AS productos_producto,
+     ventas.`idVentas` AS ventas_idVentas,
+     detallevta.`idDetalleVta` AS detallevta_idDetalleVta,
+     ventas.`fk_idOperadores` AS ventas_fk_idOperadores,
+     operadores.`razonSocial` AS operadores_razonSocial
+FROM
+     `productos` productos INNER JOIN `stock` stock ON productos.`idproductos` = stock.`fk_idproductos`
+     INNER JOIN `detallevta` detallevta ON productos.`idproductos` = detallevta.`fk_idproductos`
+     AND detallevta.`idDetalleVta` = stock.`fk_idDetalleVTA`
+     INNER JOIN `ventas` ventas ON detallevta.`fk_idventas` = ventas.`idVentas`
+     INNER JOIN `operadores` operadores ON ventas.`fk_idOperadores` = operadores.`idOperadores`
+WHERE
+     stock.`fk_idproductos` = $P{id}
+ORDER BY
+     stock.`fecha` DESC]]>
+	</queryString>
+	<field name="stock_idStock" class="java.lang.Long"/>
+	<field name="stock_cantidad" class="java.lang.Integer"/>
+	<field name="stock_fecha" class="java.sql.Date"/>
+	<field name="stock_salida" class="java.lang.Integer"/>
+	<field name="stock_fk_idproductos" class="java.lang.Long"/>
+	<field name="productos_idproductos" class="java.lang.Long"/>
+	<field name="productos_producto" class="java.lang.String"/>
+	<field name="ventas_idVentas" class="java.lang.Long"/>
+	<field name="detallevta_idDetalleVta" class="java.lang.Long"/>
+	<field name="ventas_fk_idOperadores" class="java.lang.Long"/>
+	<field name="operadores_razonSocial" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="41" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="2448dc0a-85d8-491e-9682-641a226dfab8" x="0" y="0" width="555" height="41"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="22" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ SALIDA STOCK X PRODUCTO]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="22" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="5cbeaccf-5883-4591-a009-c6a091fd345d" x="0" y="2" width="34" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="015c53c1-0335-4afb-b248-acd7bcbd4c22" x="34" y="2" width="59" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[FECHA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="4b856a33-2872-49d3-bd30-e5e82d5d751c" x="294" y="2" width="134" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[PRODUCTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="866632df-f890-4b55-902b-3e42bd9c50cd" x="428" y="2" width="61" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ENTRADA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="d2da5713-5b55-485e-8ad4-056d976112eb" x="504" y="2" width="51" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[SALIDA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f68814bf-b409-431b-b056-c8d5ef2c47f1" x="93" y="2" width="189" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[OPERADOR]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="3dd1a0f1-42de-42c8-98b9-a18ad9bf8954" x="0" y="21" width="555" height="1"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement uuid="ce024bd0-203f-4bdb-bb5a-239e7b141d11" x="0" y="1" width="34" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{stock_idStock}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement uuid="a7ce948e-ba08-452a-8a9d-07072b7ae87f" x="34" y="1" width="59" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{stock_fecha}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="a44e5396-bd53-417b-85bc-08ab72607b9d" x="294" y="1" width="134" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{productos_producto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="3591493b-8b91-45b5-b505-a977a89c4321" x="428" y="1" width="61" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{stock_cantidad}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="e2fa88a3-5409-47a1-8077-768ae8d7d313" x="504" y="1" width="51" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{stock_salida}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="54510ff8-41e3-4b3e-82be-130b6c6f3aaa" x="93" y="1" width="189" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{operadores_razonSocial}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

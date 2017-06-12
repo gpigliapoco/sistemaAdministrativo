@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aba0a56d-8aac-49f2-86db-d0131ee9a949">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="mes" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="year" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     categoriavale.`idCategoriaVALE` AS categoriavale_idCategoriaVALE,
+     categoriavale.`categoria` AS categoriavale_categoria,
+     empleados.`idEmpleados` AS empleados_idEmpleados,
+     sueldo.`fecha` AS sueldo_fecha,
+    sum(sueldo.`importe`) AS sueldo_importe,
+     sueldo.`fk_idCategoriaVALE` AS sueldo_fk_idCategoriaVALE
+FROM
+     `empleados` empleados INNER JOIN `sueldo` sueldo ON empleados.`idEmpleados` = sueldo.`fk_idEmpleados`
+     INNER JOIN `categoriavale` categoriavale ON sueldo.`fk_idCategoriaVALE` = categoriavale.`idCategoriaVALE`
+where month(sueldo.`fecha`)=$P{mes} and year(sueldo.`fecha`)=$P{year}
+group by categoriavale.`categoria`
+order by sueldo_importe desc]]>
+	</queryString>
+	<field name="categoriavale_idCategoriaVALE" class="java.lang.Long"/>
+	<field name="categoriavale_categoria" class="java.lang.String"/>
+	<field name="empleados_idEmpleados" class="java.lang.Long"/>
+	<field name="sueldo_fecha" class="java.sql.Date"/>
+	<field name="sueldo_importe" class="java.lang.Double"/>
+	<field name="sueldo_fk_idCategoriaVALE" class="java.lang.Long"/>
+	<variable name="variable1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{sueldo_importe}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="22" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="e48f1333-e060-430a-813b-4518f83c7a94" x="146" y="2" width="100" height="20"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CATEGORIA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="d25ce074-08da-4c25-9bfb-68dc7274e82d" x="271" y="2" width="100" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[IMPORTE]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement uuid="d77e8f11-0d3d-4ab8-9802-9f0fc587733f" x="146" y="0" width="100" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{categoriavale_categoria}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement uuid="569e9abe-ca1f-48cd-ba2a-73ba07c56890" x="271" y="0" width="100" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{sueldo_importe}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="21">
+			<textField pattern="¤ #,##0.00">
+				<reportElement uuid="c4f6410b-30f8-4aa3-8d00-b112fb3e966d" x="271" y="0" width="100" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{variable1}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="2e3a3be9-5397-41ea-b29a-8ba8e276a0ce" x="271" y="0" width="100" height="1"/>
+			</line>
+		</band>
+	</summary>
+</jasperReport>

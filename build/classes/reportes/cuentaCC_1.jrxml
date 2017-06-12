@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2d49087d-e8d9-4074-85c0-a1818333f948">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="op" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="inicio" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fin" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="VALOR" class="java.math.BigDecimal"/>
+	<queryString>
+		<![CDATA[SELECT
+     cuentacorriente.`idCuentas` AS cuentacorriente_idCuentas,
+     cuentacorriente.`debe` AS cuentacorriente_debe,
+     cuentacorriente.`fecha` AS cuentacorriente_fecha,
+     cuentacorriente.`haber` AS cuentacorriente_haber,
+     cuentacorriente.`observacion` AS cuentacorriente_observacion,
+     cuentacorriente.`numero` AS cuentacorriente_numero,
+     operadores.`idOperadores` AS operadores_idOperadores,
+     operadores.`direccion` AS operadores_direccion,
+     operadores.`localidad` AS operadores_localidad,
+     operadores.`provincia` AS operadores_provincia,
+     operadores.`razonSocial` AS operadores_razonSocial,
+     categoriaop.`categoria` AS categoriaop_categoria,
+     vendedores.`idvendedores` AS vendedores_idvendedores,
+     vendedores.`nombre` AS vendedores_nombre
+FROM
+     `operadores` operadores INNER JOIN `cuentacorriente` cuentacorriente ON operadores.`idOperadores` = cuentacorriente.`fk_idOperadores`
+     INNER JOIN `categoriaop` categoriaop ON operadores.`fk_idcategoriaOP` = categoriaop.`idcategoriaOP`
+     INNER JOIN `vendedores` vendedores ON operadores.`fk_idvendedores` = vendedores.`idvendedores`
+WHERE operadores.`idOperadores`=$P{op} and  cuentacorriente.`fecha` between $P{inicio} and $P{fin}]]>
+	</queryString>
+	<field name="cuentacorriente_idCuentas" class="java.lang.Long"/>
+	<field name="cuentacorriente_debe" class="java.lang.Double"/>
+	<field name="cuentacorriente_fecha" class="java.sql.Date"/>
+	<field name="cuentacorriente_haber" class="java.lang.Double"/>
+	<field name="cuentacorriente_observacion" class="java.lang.String"/>
+	<field name="cuentacorriente_numero" class="java.lang.String"/>
+	<field name="operadores_idOperadores" class="java.lang.Long"/>
+	<field name="operadores_direccion" class="java.lang.String"/>
+	<field name="operadores_localidad" class="java.lang.String"/>
+	<field name="operadores_provincia" class="java.lang.String"/>
+	<field name="operadores_razonSocial" class="java.lang.String"/>
+	<field name="categoriaop_categoria" class="java.lang.String"/>
+	<field name="vendedores_idvendedores" class="java.lang.Long"/>
+	<field name="vendedores_nombre" class="java.lang.String"/>
+	<variable name="variable1" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{cuentacorriente_debe}-$F{cuentacorriente_haber}]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	</variable>
+	<variable name="SUBTOTAL" class="java.lang.Double">
+		<variableExpression><![CDATA[$V{variable1}]]></variableExpression>
+	</variable>
+	<variable name="RESULTADO" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[sum($V{variable1})]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="46" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="d090038b-ceb6-48ef-af79-f58c4e91faa5" x="0" y="0" width="555" height="45"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="20" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ESTADO DE CUENTA CORRIENTE]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="62" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="0d1f0f6b-ed8d-4dba-9f2f-e6d00c9b6fbb" x="0" y="0" width="72" height="18"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Razon Social :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ab96c4ee-d4be-4511-879a-43323cb79488" x="0" y="20" width="60" height="18"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Direccion :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="66de2a6e-2a1d-4495-be07-5d8d637da971" x="270" y="20" width="61" height="18"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Localidad :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="66de2a6e-2a1d-4495-be07-5d8d637da971" x="394" y="20" width="59" height="18"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Provincia :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="66de2a6e-2a1d-4495-be07-5d8d637da971" x="394" y="0" width="59" height="18"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Categoria :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="66de2a6e-2a1d-4495-be07-5d8d637da971" x="0" y="40" width="60" height="18"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Vendedor :]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="57fd0740-95ea-40b0-98c4-f7ac11ec9231" x="72" y="0" width="24" height="18"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{operadores_idOperadores}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="c04c1244-c611-4551-9e55-8c91237aecba" x="106" y="0" width="267" height="18"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{operadores_razonSocial}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="27324b16-ae8f-4838-8327-39a77835d6b0" x="453" y="0" width="89" height="18"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{categoriaop_categoria}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="c8f42ce6-af15-40f1-ab3e-28230882b02d" x="60" y="20" width="198" height="18"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{operadores_direccion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="a817348b-5f2b-42ec-9693-cca065f63c3d" x="331" y="20" width="63" height="18"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{operadores_localidad}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="75335f14-dfdd-4243-bf07-06fb23aafd5d" x="453" y="20" width="89" height="18"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{operadores_provincia}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="29adb2e6-9728-44de-b495-98dd21f0cdc7" x="60" y="40" width="24" height="18"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{vendedores_idvendedores}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="036b61e7-2b90-4eb0-9a6b-3e75acd282c5" x="84" y="40" width="279" height="18"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{vendedores_nombre}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="7062ddc7-b5fd-4114-b05a-5e31bf4e9e2f" x="0" y="0" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="7062ddc7-b5fd-4114-b05a-5e31bf4e9e2f" x="0" y="61" width="555" height="1"/>
+			</line>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="39" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="5d5d465b-cf7b-4c7c-8e62-3c8254cc9229" x="0" y="3" width="43" height="20"/>
+				<textElement/>
+				<text><![CDATA[FECHA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="31c67cde-ea8b-42ef-92af-e86d5a1df87e" x="60" y="3" width="36" height="20"/>
+				<textElement/>
+				<text><![CDATA[Nº ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="975f4e23-100c-4a73-8624-83f30957b576" x="106" y="3" width="200" height="20"/>
+				<textElement/>
+				<text><![CDATA[DETALLE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ca5680a0-d23a-4b18-87b5-d13affd47f7a" x="331" y="3" width="63" height="20"/>
+				<textElement/>
+				<text><![CDATA[DEBE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="80f811b0-10da-4c4c-83bb-1f67b00c7d2e" x="394" y="3" width="59" height="20"/>
+				<textElement/>
+				<text><![CDATA[HABER]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="7062ddc7-b5fd-4114-b05a-5e31bf4e9e2f" x="0" y="22" width="555" height="1"/>
+			</line>
+			<staticText>
+				<reportElement uuid="9cc8ad71-5725-4e59-92a8-0b2d5269fa2e" x="106" y="22" width="200" height="16"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[SALDO ANTERIOR A LA FECHA]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="14adc934-9a3a-4265-9513-e885dd362c9b" x="106" y="37" width="449" height="1"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="17" splitType="Stretch">
+			<textField>
+				<reportElement uuid="7189eefd-d4e5-41df-8486-c78f6b66bda6" x="0" y="0" width="43" height="16"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{cuentacorriente_fecha}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="e45b02ba-5b5d-4b70-b4fa-717b90457cff" x="60" y="0" width="36" height="16"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{cuentacorriente_numero}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="3d6466bc-8616-48b2-8f17-0567ebd557c7" x="106" y="0" width="200" height="16"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{cuentacorriente_observacion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement uuid="d75dbefc-eafa-4da2-808e-f0f258381a40" x="331" y="0" width="63" height="16"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{cuentacorriente_debe}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement uuid="de5f3569-b58d-46f9-af65-c6d3410942a7" x="394" y="0" width="59" height="16"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{cuentacorriente_haber}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="25ed494d-25f3-4db1-9d51-98a6668d9095" x="463" y="0" width="79" height="16"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$V{variable1}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="4c00a4ed-864f-4acb-bd67-cc379f4fc3dc" x="363" y="22" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[SALDO A LA FECHA :]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="bf20e1e5-2440-4f14-ad93-5c81390ff7c1" x="463" y="22" width="92" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$V{RESULTADO}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="98b1a867-700c-461c-8e32-76535e5b4e13">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="21"/>
+	<parameter name="MES" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="YEAR" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     (sum(detallevta.`cantidad`)*avg(detallevta.`precio`))  AS ventas_importe,
+     sum(detallevta.`cantidad`) AS detallevta_cantidad,
+     avg(detallevta.`precio`) AS detallevta_precio,
+     ventas.`fecha` AS ventas_fecha,
+     productos.`producto` AS productos_producto,
+     productos.`idproductos` AS productos_idproductos,
+     ventas.`fk_idtipocomprobante` AS ventas_fk_idtipocomprobante,
+     productos.`fk_idcategoriaPR` AS productos_fk_idcategoriaPR
+FROM
+     `ventas` ventas INNER JOIN `detallevta` detallevta ON ventas.`idVentas` = detallevta.`fk_idventas`
+     INNER JOIN `productos` productos ON detallevta.`fk_idproductos` = productos.`idproductos`
+WHERE
+     MONTH(ventas.`fecha`) = $P{MES}
+ AND YEAR(ventas.`fecha`) = $P{YEAR}
+GROUP BY
+     productos_producto
+HAVING ventas.`fk_idtipocomprobante` != 3 AND productos.`fk_idcategoriaPR` !=3]]>
+	</queryString>
+	<field name="ventas_importe" class="java.lang.Double"/>
+	<field name="detallevta_cantidad" class="java.math.BigDecimal"/>
+	<field name="detallevta_precio" class="java.lang.Double"/>
+	<field name="ventas_fecha" class="java.sql.Date"/>
+	<field name="productos_producto" class="java.lang.String"/>
+	<field name="productos_idproductos" class="java.lang.Long"/>
+	<field name="ventas_fk_idtipocomprobante" class="java.lang.Long"/>
+	<field name="productos_fk_idcategoriaPR" class="java.lang.Long"/>
+	<variable name="TOTAL" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{ventas_importe}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="46" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="d090038b-ceb6-48ef-af79-f58c4e91faa5" x="0" y="0" width="555" height="45"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="20" isBold="true"/>
+				</textElement>
+				<text><![CDATA[VENTAS MENSUALES X PRODUCTO]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="22" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="3db9b8ab-4b77-4293-90b2-4414920f3854" x="16" y="2" width="24" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="16b94bc2-4372-4d62-8a93-ea225e30f8b5" x="40" y="2" width="193" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[PRODUCTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="32ee8a16-c42f-4062-ab1f-2ea56572c26e" x="270" y="2" width="65" height="20"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CANTIDAD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="22315df8-6a21-484c-9a28-4639621d39a3" x="351" y="2" width="49" height="20"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[PRECIO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="23795a71-0460-424d-9c59-325ee0ec1f3a" x="412" y="2" width="99" height="20"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="32cf6304-6095-4f44-beff-2e11c0014e79" x="0" y="2" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="32cf6304-6095-4f44-beff-2e11c0014e79" x="0" y="21" width="555" height="1"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<textField>
+				<reportElement uuid="00cf31d5-baca-4426-8d02-a6c7449edd7f" x="16" y="0" width="24" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{productos_idproductos}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="fbdcd210-1189-4c57-90b1-03298c0e975d" x="40" y="0" width="193" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{productos_producto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="3031ff23-18cb-4367-89f0-5b23f669913a" x="270" y="0" width="65" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{detallevta_cantidad}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement uuid="64a3c112-4ac4-4dad-8532-11ca03813d9d" x="351" y="0" width="49" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{detallevta_precio}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement uuid="a9b88d45-d7d0-4790-b128-775da5dec6bc" x="412" y="0" width="100" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{ventas_importe}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="433" splitType="Stretch">
+			<textField pattern="¤ #,##0.00">
+				<reportElement uuid="9d43823b-53ce-497e-9da8-de4f7c3d2b4f" x="412" y="0" width="100" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{TOTAL}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="3f0fac7a-d850-4db5-8c17-dab9e97c40d0" x="0" y="0" width="555" height="1"/>
+			</line>
+			<pieChart>
+				<chart renderType="draw" theme="default">
+					<reportElement uuid="776eb1f3-8b5e-4f38-bc77-59b38c3cdc89" x="0" y="20" width="555" height="413"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend position="Bottom">
+						<font size="8"/>
+					</chartLegend>
+				</chart>
+				<pieDataset>
+					<keyExpression><![CDATA[$F{productos_producto}]]></keyExpression>
+					<valueExpression><![CDATA[$F{ventas_importe}]]></valueExpression>
+				</pieDataset>
+				<piePlot>
+					<plot/>
+					<itemLabel>
+						<font size="8"/>
+					</itemLabel>
+				</piePlot>
+			</pieChart>
+		</band>
+	</summary>
+</jasperReport>

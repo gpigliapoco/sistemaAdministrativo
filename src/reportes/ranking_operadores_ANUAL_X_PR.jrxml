@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2fb890e4-61fb-4e79-ab8d-69b550a4a390">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="year" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="mes" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     sum(ventas.`importe`) AS ventas_importe,
+     operadores.`idOperadores` AS operadores_idOperadores,
+     operadores.`razonSocial` AS operadores_razonSocial,
+     ventas.`fecha` AS ventas_fecha,
+     detallevta.`cantidad` AS detallevta_cantidad,
+     sum(detallevta.`cantidad`)as total_cantidad,
+     detallevta.`precio` AS detallevta_precio,
+     avg( detallevta.`precio`)as promedioPr,
+     detallevta.`fk_idproductos` AS detallevta_fk_idproductos,
+     productos.`producto` AS productos_producto
+FROM
+     `operadores` operadores INNER JOIN `ventas` ventas ON operadores.`idOperadores` = ventas.`fk_idOperadores`
+     INNER JOIN `detallevta` detallevta ON ventas.`idVentas` = detallevta.`fk_idventas`
+     INNER JOIN `productos` productos ON detallevta.`fk_idproductos` = productos.`idproductos`
+WHERE
+     year(ventas.`fecha`) = $P{year} and month(ventas.`fecha`)=$P{mes} and detallevta.`fk_idproductos`=$P{ID}
+GROUP BY
+     operadores_idOperadores
+ORDER BY
+     total_cantidad DESC,
+     ventas_importe DESC]]>
+	</queryString>
+	<field name="ventas_importe" class="java.lang.Double"/>
+	<field name="operadores_idOperadores" class="java.lang.Long"/>
+	<field name="operadores_razonSocial" class="java.lang.String"/>
+	<field name="ventas_fecha" class="java.sql.Date"/>
+	<field name="detallevta_cantidad" class="java.lang.Integer"/>
+	<field name="total_cantidad" class="java.math.BigDecimal"/>
+	<field name="detallevta_precio" class="java.lang.Double"/>
+	<field name="promedioPr" class="java.lang.Double"/>
+	<field name="detallevta_fk_idproductos" class="java.lang.Long"/>
+	<field name="productos_producto" class="java.lang.String"/>
+	<variable name="variable1" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[1+1]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="45" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="d090038b-ceb6-48ef-af79-f58c4e91faa5" x="0" y="0" width="555" height="45"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="20" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RANKING OPERADORES MENSUAL X PRODUCTO]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="22">
+			<textField>
+				<reportElement uuid="99b3419b-910e-451a-a82b-ab7b0d4b240f" x="69" y="0" width="181" height="20"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{productos_producto}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="9dccd1bf-7a24-4a5f-b92a-3fc8289840c7" x="0" y="0" width="69" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[PRODUCTO]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="21" splitType="Stretch">
+			<line>
+				<reportElement uuid="7062ddc7-b5fd-4114-b05a-5e31bf4e9e2f" x="0" y="0" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="7062ddc7-b5fd-4114-b05a-5e31bf4e9e2f" x="0" y="20" width="555" height="1"/>
+			</line>
+			<staticText>
+				<reportElement uuid="1df91318-3f79-4a61-a330-c14aad5c6281" x="455" y="0" width="100" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[VENTAS TOTALES]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="9dccd1bf-7a24-4a5f-b92a-3fc8289840c7" x="0" y="1" width="69" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[RANK]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1df91318-3f79-4a61-a330-c14aad5c6281" x="303" y="0" width="58" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CANTIDAD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="33ef4a96-9cda-47e7-89b1-608de1ab4d38" x="69" y="1" width="49" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="0ab58170-dbac-4d1f-bc33-bc9a15e74f4b" x="129" y="0" width="162" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[RAZON SOCIAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1df91318-3f79-4a61-a330-c14aad5c6281" x="379" y="1" width="58" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[PRECIO %]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="17" splitType="Stretch">
+			<textField pattern="¤ #,##0.00">
+				<reportElement uuid="032fc8ce-17cf-4cc0-8c03-ed4188f74743" x="455" y="0" width="100" height="15"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{ventas_importe}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="acad1bc6-2588-44cc-b17d-bbdf5e375ac1" x="0" y="0" width="69" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{variable1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="74bac37c-6a41-4e81-89c7-46b54d08e65a" x="303" y="0" width="58" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{total_cantidad}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement uuid="3d790f7e-b781-4403-ab21-2821c02ad068" x="379" y="0" width="58" height="15"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{promedioPr}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="63abef6a-2e4d-4874-b496-8f1940d5ff63" x="69" y="0" width="49" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{operadores_idOperadores}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="abd53f84-bd32-4814-a198-5ef172650c86" x="129" y="0" width="162" height="15"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{operadores_razonSocial}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
