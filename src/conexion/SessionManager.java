@@ -58,13 +58,13 @@ public abstract class SessionManager {
         props.put("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");
 
         // Establece la url de conexion dependiente del RDBMS
-        props.put("hibernate.connection.url", "jdbc:mysql://192.168.2.33:3306/orestes_2");
+        props.put("hibernate.connection.url", "jdbc:mysql://192.168.100.103:3306/orestes_2");
 
         // Establece el usuario
         props.put("hibernate.connection.username", "root");
 
         // Establece la clave
-        props.put("hibernate.connection.password", "1234");
+        props.put("hibernate.connection.password", "password");
 
         // Establece el dialecto a utilizar
         props.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");

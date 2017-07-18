@@ -25,9 +25,9 @@ public class conexcion1 {
 //    Connection conex=null;
     
        public String db="orestes_2";
-    public String url="jdbc:mysql://192.168.2.33:3306/"+db;
+    public String url="jdbc:mysql://192.168.100.103:3306/"+db;
     public String user="root";
-    public String pass="1234";
+    public String pass="";
     
     
     public conexcion1(){
